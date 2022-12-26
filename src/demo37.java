@@ -18,7 +18,8 @@ public class demo37 {
             a.add(i);
         }
         while(true){
-            boolean flag=true;
+            boolean endflag=true;
+            boolean noupdate=true;
             for(int i=0;i<9;i++){
                 for(int j=0;j<9;j++){
                     char e=board[i][j];
@@ -35,18 +36,21 @@ public class demo37 {
                             h[i].add(t);
                             s[j].add(t);
                             f[(i/3)*3+j/3].add(t);
+                            noupdate=false;
                         }else if(b.size()>1){
-                            flag=false;
+                            endflag=false;
                         }
                         System.out.println("e = " + e);
                     }else{
                         h[i].add(n);
                         s[j].add(n);
                         f[(i/3)*3+j/3].add(n);
+                        noupdate=false;
                     }
                 }
             }
-            if(flag)return;
+            if(endflag)return;
+            if(noupdate)break;
         }
     }
 
