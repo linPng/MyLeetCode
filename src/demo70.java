@@ -1,16 +1,26 @@
 public class demo70 {
-    //爬楼梯
-    public static int climbStairs(int n) {
-        int[] dp=new int[n+1];
-        dp[1]=1;dp[0]=1;
-        for(int i = 2;i<=n;i++){
-            dp[i]=dp[i-2]+dp[i-1];
+    //删除排序链表中的重复元素
+    public static ListNode deleteDuplicates(ListNode head) {
+        ListNode r=head;
+        while(head!=null&&head.next!=null){
+            if(head.val==head.next.val){
+                head.next=head.next.next;
+            }else{
+                head=head.next;
+            }
         }
-        return dp[n];
+        return r;
     }
     public static void main(String[] args) {
 
-        System.out.println("=== = " + climbStairs(3));
+        System.out.println("=== = " + deleteDuplicates(new ListNode()));
     }
 
+  public static class ListNode {
+      int val;
+      ListNode next;
+      ListNode() {}
+      ListNode(int val) { this.val = val; }
+      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+  }
 }
