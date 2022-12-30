@@ -15,12 +15,11 @@ public class demo84 {
         d.add(0);
         for(int i=1;i<n;i++){
             while(heights2[i]<heights2[d.getLast()]){
-                int S,h=heights2[d.getLast()],l=i-d.getLast();
+                int S,h=heights2[d.pollLast()],l=i-d.getLast()-1;//pollLast 弹出最后一个元素
                 S=h*l;
                 if(S>max){
                     max=S;
                 }
-                d.removeLast();
             }
             d.add(i);
         }
@@ -40,6 +39,7 @@ public class demo84 {
     }
     public static void main(String[] args) {
         System.out.println(" = " + largestRectangleArea(new int[]{2,1,2}));
+        System.out.println(" = " + largestRectangleArea(new int[]{2,1,5,6,2,3}));
     }
 
 }

@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class demo76 {
-    //最小覆盖子串 滑动窗口
+    //最小覆盖子串 滑动窗口下·
     public static String minWindow(String s, String t) {
         String ret="";
         int n=s.length(),r=0,l=0,min=Integer.MAX_VALUE,min_r=0,min_l=0;
