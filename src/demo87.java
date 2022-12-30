@@ -12,8 +12,28 @@ public class demo87 {
             return false;
         }
         boolean[][][] dp=new boolean[n][n][n+1];
-
-        return false;
+        char[] c1=s1.toCharArray();
+        char[] c2=s2.toCharArray();
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                dp[i][j][1]=c1[i]==c2[j];
+            }
+        }
+        for(int len=2;len<=n;len++){
+            for(int i=0;i<n-len+1;i++){
+                for(int j=0;j<n-len+1;j++){
+                    for(int k=1;k<len;k++){
+                        boolean f=false;
+                        f=(dp[i][j][k]&&dp[i+k][j+k][len-k])||(dp[i][j+len-k][k]&&dp[i+k][j][len-k]);
+                        if(f){
+                            dp[i][j][len]=true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return dp[0][0][n];
     }
     //递归+剪枝
     static Set<String> set=new HashSet<>();
@@ -59,10 +79,11 @@ public class demo87 {
         System.out.println(" = " + isScramble("abcde","caebd"));
         System.out.println(" = " + isScramble("ccabcbabcbabbbbcbb","bbbbabccccbbbabcba"));
         System.out.println(" = " + isScramble("eebaacbcbcadaaedceaaacadccd","eadcaacabaddaceacbceaabeccd"));
+        System.out.println(" = ");
         System.out.println(" = " + isScramble_dp("great","rgeat"));
-        System.out.println(" = " + isScramble_dp("abcde","caebd"));
-        System.out.println(" = " + isScramble_dp("ccabcbabcbabbbbcbb","bbbbabccccbbbabcba"));
-        System.out.println(" = " + isScramble_dp("eebaacbcbcadaaedceaaacadccd","eadcaacabaddaceacbceaabeccd"));
+        //System.out.println(" = " + isScramble_dp("abcde","caebd"));
+        //System.out.println(" = " + isScramble_dp("ccabcbabcbabbbbcbb","bbbbabccccbbbabcba"));
+        //System.out.println(" = " + isScramble_dp("eebaacbcbcadaaedceaaacadccd","eadcaacabaddaceacbceaabeccd"));
     }
 
 }
