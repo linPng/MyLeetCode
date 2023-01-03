@@ -2,7 +2,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class demo855 {
-    //考场就座
+    //考场就座 有序集合TreeSet
     class ExamRoom {
         int N;
         TreeSet<Integer> er;
