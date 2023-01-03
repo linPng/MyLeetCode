@@ -10,6 +10,7 @@ public class demo84 {
         int[] heights2 = new int[n];
         heights2[0]=-1;
         heights2[n-1]=-1;
+        //数组截取
         System.arraycopy(heights,0,heights2,1,heights.length);
         Deque<Integer> d=new ArrayDeque<>();
         d.add(0);
