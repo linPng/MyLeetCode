@@ -1,11 +1,11 @@
 import java.util.*;
 
 public class demo126 {
-    //单词接龙 II
-
-    //暴力解 超出时间限制
+    //单词接龙 II 困难经典 层序遍历+逆回溯  暴力解 超出时间限制 需要通过层序遍历确认最短枝干;
     static Map<String, Set<String>> keymap=new HashMap<>();
-    static List<String> path=new ArrayList<>();
+    static Map<String, Integer> distmap=new HashMap<>();
+    static List<Set<String>> distsetlist=new ArrayList<>();
+    static Deque<String> path=new ArrayDeque<>();
     static List<List<String>> ret=new ArrayList<>();
     static int N=0;
     public static List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
@@ -21,30 +21,65 @@ public class demo126 {
             }
         }
         wordList.remove(beginWord);
-        path.add(beginWord);
-        dfs(beginWord,endWord,wordList);
+        //求深度
+        Deque<String> deep=new ArrayDeque();
+        int dis=0;
+        deep.add(beginWord);
+        boolean isend=false;
+        while(!deep.isEmpty()){
+            dis++;
+            int dsize=deep.size();
+            for(int q=0;q<dsize;q++){
+                String b =deep.pollFirst();
+                for(String s:keymap.getOrDefault(b,new HashSet<>())){
+                    if(s.equals(endWord)){
+                        isend=true;
+                    }
+                    if(!distmap.containsKey(s)){
+                        distmap.put(s,dis);
+                        deep.addLast(s);
+                    }
+                }
+            }
+            distsetlist.add(new HashSet<>(deep));
+            if(isend){break;}
+        }
+        if(!isend){
+            return ret;
+        }
+        path.addFirst(endWord);
+        if(distsetlist.size()-1==0){
+            path.addFirst(beginWord);
+            ret.add(new ArrayList<>(path));
+            return ret;
+        }
+        dfs(beginWord,endWord,distsetlist.size()-1);
         //倒序删除list
-        for(int i=ret.size()-1;i>=0;i--){
+        /*for(int i=ret.size()-1;i>=0;i--){
             if (ret.get(i).size()>N+1){
                 ret.remove(i);
             }
-        }
+        }*/
         return ret;
     }
-    public static void dfs(String beginWord, String endWord, List<String> wordList, Set<String> set){
-        if(path.size()>N)return;
-        if(keymap.getOrDefault(beginWord,new HashSet<>()).contains(endWord)){
-            path.add(endWord);
-            ret.add(new ArrayList<>(path));
-            path.remove(endWord);
-            N=path.size();
-            return;
-        }
-        for(String s:keymap.getOrDefault(beginWord,new HashSet<>())){
-            if (!path.contains(s)) {
-                path.add(s);
-                dfs(s,endWord,wordList,set);
-                path.remove(s);
+    public static void dfs(String beginWord, String endWord, int layer){
+        layer--;
+        Set<String> dic=distsetlist.get(layer);
+        for(String s:dic){
+            if(!keymap.getOrDefault(endWord,new HashSet<>()).contains(s)){
+                //dic.remove(s);
+            }else{
+                if(layer==0){
+                    path.addFirst(s);
+                    path.addFirst(beginWord);
+                    ret.add(new ArrayList<>(path));
+                    path.remove(beginWord);
+                    path.remove(s);
+                }else {
+                    path.addFirst(s);
+                    dfs(beginWord, s, layer);
+                    path.remove(s);
+                }
             }
         }
     }
