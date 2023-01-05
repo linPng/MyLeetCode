@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class demo132 {
-    //分割回文串 II  动态规划预处理+动态规划
+    //分割回文串 II  动态规划预处理+动态规划   暴力回溯会超时
     public static int minCut(String s) {
         List<String> l=new ArrayList<>();
         int n=s.length();
