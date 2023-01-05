@@ -3,8 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class demo132 {
-    //分割回文串 II  动态规划预处理+回溯
-    static int min=Integer.MAX_VALUE;
+    //分割回文串 II  动态规划预处理+动态规划
     public static int minCut(String s) {
         List<String> l=new ArrayList<>();
         int n=s.length();
@@ -21,22 +20,22 @@ public class demo132 {
                 }
             }
         }
-        f(s,0,l,b);
-        return min;
-    }
-    public static void f(String s, int i,List<String> l,boolean[][] b){
-        int n=s.length();
-        if(i==n){
-            min=Math.min(min,l.size()-1);
-            return;
-        }
-        for(int y=i;y<n;y++){
-            if(b[i][y]){
-                l.add(s.substring(i,y+1));
-                f(s,y+1,l,b);
-                l.remove(l.size()-1);
+        int[] f=new int[n];
+        Arrays.fill(f,Integer.MAX_VALUE);
+        for(int i=0;i<n;i++){
+            if(b[0][i]){
+                f[i]=0;
+            }else{
+
+                for(int j=i;j>0;j--){
+                    if(b[j][i]){
+                        f[i]=Math.min(f[i],f[j-1]+1);
+                    }
+                }
             }
+
         }
+        return f[n-1];
     }
     public static void main(String[] args) {
         System.out.println(" = " + minCut("aab"));
