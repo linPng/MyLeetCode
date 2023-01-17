@@ -28,6 +28,7 @@ public class demo1819 {
         return ans;
     }
 
+    //求公约数 辗转相除法
     public int gcd(int num1, int num2) {
         while (num2 != 0) {
             int temp = num1;
@@ -35,6 +36,9 @@ public class demo1819 {
             num2 = temp % num2;
         }
         return num1;
+    }
+    public int gcd2(int a, int b) {
+        return b != 0 ? gcd(b, a % b) : a;
     }
 
 }
