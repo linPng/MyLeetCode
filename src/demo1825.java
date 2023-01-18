@@ -2,10 +2,11 @@ import java.util.*;
 
 public class demo1825 {
     //求出 MK 平均值
+    //三个有序集合 分别保存最小,中间,最大
     class MKAverage {
         private int m, k;
-        private Queue<Integer> q;
-        private TreeMap<Integer, Integer> s1;
+        private Deque<Integer> q;//数据流
+        private TreeMap<Integer, Integer> s1;//有序集合
         private TreeMap<Integer, Integer> s2;
         private TreeMap<Integer, Integer> s3;
         private int size1, size2, size3;
@@ -25,12 +26,12 @@ public class demo1825 {
         }
 
         public void addElement(int num) {
-            q.offer(num);
+            q.offer(num);//offerLast == add
             if (q.size() <= m) {
                 s2.put(num, s2.getOrDefault(num, 0) + 1);
                 size2++;
                 sum2 += num;
-                if (q.size() == m) {
+                if (q.size() == m) {//达到临界,将s2多余的移到s13
                     while (size1 < k) {
                         int firstNum = s2.firstKey();
                         s1.put(firstNum, s1.getOrDefault(firstNum, 0) + 1);
@@ -57,7 +58,7 @@ public class demo1825 {
                 return;
             }
 
-            if (num < s1.lastKey()) {
+            if (num < s1.lastKey()) {//加入s1
                 s1.put(num, s1.getOrDefault(num, 0) + 1);
                 int lastNum = s1.lastKey();
                 s2.put(lastNum, s2.getOrDefault(lastNum, 0) + 1);
@@ -67,7 +68,7 @@ public class demo1825 {
                 if (s1.get(lastNum) == 0) {
                     s1.remove(lastNum);
                 }
-            } else if (num > s3.firstKey()) {
+            } else if (num > s3.firstKey()) {//加入s3
                 s3.put(num, s3.getOrDefault(num, 0) + 1);
                 int firstNum = s3.firstKey();
                 s2.put(firstNum, s2.getOrDefault(firstNum, 0) + 1);
@@ -77,13 +78,13 @@ public class demo1825 {
                 if (s3.get(firstNum) == 0) {
                     s3.remove(firstNum);
                 }
-            } else {
+            } else {//加入s2
                 s2.put(num, s2.getOrDefault(num, 0) + 1);
                 size2++;
                 sum2 += num;
             }
 
-            int x = q.poll();
+            int x = q.poll();//pollfirst 移出第一个,最老的一个
             if (s1.containsKey(x)) {
                 s1.put(x, s1.get(x) - 1);
                 if (s1.get(x) == 0) {
@@ -128,6 +129,7 @@ public class demo1825 {
         }
     }
 
+    //暴力解不可取
     class MKAverage2 {
         Deque<Integer> d = new ArrayDeque<>();
         int mv,kv;
