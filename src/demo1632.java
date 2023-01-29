@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class demo1632 {
-    //矩阵转换后的秩 困难 非常难 不会 并查集 + 拓扑排序
+    //矩阵转换后的秩 困难 特别难 不会 并查集 + 拓扑排序
     /*
     * 1.自定义并查集
     * 2.并查集初始化：同行列相同数字在一个集合内
@@ -135,6 +135,8 @@ public class demo1632 {
     class UnionFind {//查并集
         int m, n;//矩阵长宽
         int[][][] root;
+
+        //size非必须，不加也可以，用于判断引用链的大小，避免多的引用少的，优化效率
         int[][] size;
 
         public UnionFind(int m, int n) {
