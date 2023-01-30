@@ -44,7 +44,7 @@ public class demo166 {
         }
         sb.append(fractionPart.toString());
 
-        return sb.toString();
+        return sb.toString().replaceAll("\\.","[\\.]");
     }
     public static void main(String[] args) {
 
