@@ -1,63 +1,43 @@
 public class demo174 {
     //地下城游戏
-    //动态规划+贪心
+    //动态规划+反向贪心  要想清楚依赖关系，起点的最小值以来后面的路径，所以要反向计算
     public static int calculateMinimumHP(int[][] dungeon) {
         int m=dungeon.length,n=dungeon[0].length;
-        int[][][] dp = new int[m][n][2];//初始生命值/当前生命值
-        dp[0][0][0]=dungeon[0][0]>0?1:-dungeon[0][0]+1;
-        dp[0][0][1]=dp[0][0][0]+dungeon[0][0];
-        for(int j=1;j<n;j++){
-            dp[0][j][1]=dp[0][j-1][1]+dungeon[0][j];
-            if(dp[0][j][1]<=0){
-                dp[0][j][0]=1-dp[0][j][1]+dp[0][j-1][0];
-                dp[0][j][1]=1;
-            }else{
-                dp[0][j][0]=dp[0][j-1][0];
+        int[][] dp = new int[m][n];
+        dp[m-1][n-1]=1;
+        for(int j=n-2;j>=0;j--){
+            dp[m-1][j]=dungeon[m-1][j+1]>=dp[m-1][j+1]?1:dp[m-1][j+1]-dungeon[m-1][j+1];
+        }
+        for(int i=m-2;i>=0;i--){
+            dp[i][n-1]=dungeon[i+1][n-1]>=dp[i+1][n-1]?1:dp[i+1][n-1]-dungeon[i+1][n-1];
+            for(int j=n-2;j>=0;j--){
+                int t=Math.min(dp[i][j+1]-dungeon[i][j+1],dp[i+1][j]-dungeon[i+1][j]);
+                dp[i][j]=t>0?t:1;
             }
         }
-        for(int i=1;i<m;i++){
-            dp[i][0][1]=dp[i-1][0][1]+dungeon[i][0];
-            if(dp[i][0][1]<=0){
-                dp[i][0][0]=1-dp[i][0][1]+dp[i-1][0][0];
-                dp[i][0][1]=1;
-            }else{
-                dp[i][0][0]=dp[i-1][0][0];
-            }
-            for(int j=1;j<n;j++){
-                //int[] t=dp[i][j-1][0]<dp[i-1][j][0]?dp[i][j-1]:dp[i-1][j];
-                int[] t=dp[i][j-1],t2=new int[2],t3=new int[2];
-                t2[1]=t[1]+dungeon[i][j];
-                if(t2[1]<=0){
-                    t2[0]=1-t2[1]+t[0];
-                    t2[1]=1;
-                }else{
-                    t2[0]=t[0];
-                }
-                t=dp[i-1][j];
-                t3[1]=t[1]+dungeon[i][j];
-                if(t3[1]<=0){
-                    t3[0]=1-t3[1]+t[0];
-                    t3[1]=1;
-                }else{
-                    t3[0]=t[0];
-                }
-                if(t2[0]<t3[0]){
-                    dp[i][j]=t2;
-                }else if(t2[0]>t3[0]){
-                    dp[i][j]=t3;
-                }else{
-                    if(t2[1]>t3[1]){
-                        dp[i][j]=t2;
-                    }else{
-                        dp[i][j]=t3;
-                    }
-                }
+        return dp[0][0]-dungeon[0][0]>0?dp[0][0]-dungeon[0][0]:1;
+    }
+    //添加哨兵，简化逻辑
+    public static int calculateMinimumHP2(int[][] dungeon) {
+        int m=dungeon.length,n=dungeon[0].length;
+        int[][] dp = new int[m+1][n+1];
+        for(int i=0;i<m+1;i++){//max int 作为哨兵
+            dp[i][n]=Integer.MAX_VALUE;
+        }
+        for(int j=0;j<n+1;j++){//max int 作为哨兵
+            dp[m][j]=Integer.MAX_VALUE;
+        }
+        dp[m-1][n]=1;//终点最少1点
+        for(int i=m-1;i>=0;i--){
+            for(int j=n-1;j>=0;j--){
+                dp[i][j]=Math.max(Math.min(dp[i+1][j],dp[i][j+1])-dungeon[i][j],1);
             }
         }
-        return dp[m-1][n-1][0];
+        return dp[0][0];
     }
     public static void main(String[] args) {
-        System.out.println("args = " + calculateMinimumHP(new int[][]{{1,-3,3},{0,-2,0},{-3,-3,-3}}));
+        System.out.println("args = " + calculateMinimumHP(new int[][]{{-1,1}}));
+//        System.out.println("args = " + calculateMinimumHP(new int[][]{{1,-3,3},{0,-2,0},{-3,-3,-3}}));
         //System.out.println("args = " + calculateMinimumHP(new int[][]{{0,0,0},{1,1,-1}}));
         //System.out.println("args = " + calculateMinimumHP(new int[][]{{-2,-3,3},{-5,-10,1},{10,30,-5}}));
     }
