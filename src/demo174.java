@@ -1,6 +1,6 @@
 public class demo174 {
     //地下城游戏
-    //动态规划+反向贪心  要想清楚依赖关系，起点的最小值以来后面的路径，所以要反向计算
+    //动态规划+贪心  要想清楚依赖关系，起点的最小值以来后面的路径，所以要反向计算
     public static int calculateMinimumHP(int[][] dungeon) {
         int m=dungeon.length,n=dungeon[0].length;
         int[][] dp = new int[m][n];
