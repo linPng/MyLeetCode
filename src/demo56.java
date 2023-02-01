@@ -38,7 +38,7 @@ public class demo56 {
         if (intervals.length == 0) {
             return new int[0][2];
         }
-        //数组排序
+        //自定义数组排序
         Arrays.sort(intervals, new Comparator<int[]>() {
             public int compare(int[] interval1, int[] interval2) {
                 return interval1[0] - interval2[0];
