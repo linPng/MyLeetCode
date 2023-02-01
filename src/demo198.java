@@ -10,6 +10,17 @@ public class demo198 {
         }
         return dp[nums.length];
     }
+    //优化 滚动数组
+    public int rob2(int[] nums) {
+        int dp0=0;
+        int dp1=nums[0];
+        for(int i=1;i<nums.length;i++){
+            int dp2=Math.max(dp0+nums[i],dp1);
+            dp0=dp1;
+            dp1=dp2;
+        }
+        return dp1;
+    }
     public static void main(String[] args) {
 
     }
