@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,8 +19,22 @@ public class demo6927 {
         return maxBeauty;
     }
 
-    //投票算法 经典
+    //经典排序双指针
     public int maximumBeauty(int[] nums, int k) {
+        int maxBeauty = 0;
+        Arrays.sort(nums);
+        int left=0;
+        for(int right=left;right<nums.length;right++){
+            while(nums[left]+2*k<nums[right]){
+                left++;
+            }
+            maxBeauty=Math.max(maxBeauty,right-left+1);
+        }
+        return maxBeauty;
+    }
+
+    //投票算法 经典
+    public int maximumBeauty3(int[] nums, int k) {
         Map<Integer, Integer> countMap = new HashMap<>(); // 记录每个数字的出现次数
         int maxBeauty = 0; // 最大美丽值
 
