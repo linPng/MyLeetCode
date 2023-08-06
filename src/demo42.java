@@ -5,7 +5,19 @@ import java.util.Arrays;
 
 public class demo42 {
     //接雨水
-
+    public int trap(int[] height) {
+        int ret=0,n=height.length;
+        int[] dpl=new int[n];
+        int[] dpr=new int[n];//可以优化成常数
+        for(int i=1;i<n;i++){
+            dpl[i]=Math.max(dpl[i-1],height[i-1]);
+        }
+        for(int i=n-2;i>=0;i--){
+            dpr[i]=Math.max(dpr[i+1],height[i+1]);
+            ret+=Math.max(0,Math.min(dpl[i],dpr[i])-height[i]);
+        }
+        return ret;
+    }
     //动态规划
     public static int trap2(int[] nums){
         if(nums.length<3){
@@ -28,7 +40,7 @@ public class demo42 {
     }
 
     //递归超时了
-    public static int trap(int[] nums){
+    public int trap3(int[] nums){
         if(nums.length<3){
             return 0;
         }
@@ -62,7 +74,7 @@ public class demo42 {
                 .stream().mapToInt(Integer::intValue).toArray();
         int[] rnums = Arrays.asList(Arrays.stream(nums).boxed().toArray(Integer[]::new)).subList(r,nums.length)
                 .stream().mapToInt(Integer::intValue).toArray();
-        return ret+trap(lnums)+trap(rnums);
+        return ret+trap3(lnums)+trap(rnums);
     }
     public static void main(String[] args) {
         int[] nums2=new int[]{0,1,0,2,1,0,1,3,2,1,2,1};
