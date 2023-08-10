@@ -11,13 +11,13 @@ public class demo834 {
 
     public int[] sumOfDistancesInTree(int n, int[][] edges) {
         ans = new int[n];
-        sz = new int[n];
-        dp = new int[n];
+        sz = new int[n];//自己加上子节点的数量
+        dp = new int[n];//以根节点向下求和，排除父节点，所以只有父节点的最终的和
         graph = new ArrayList<List<Integer>>();
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i) {//初始化
             graph.add(new ArrayList<Integer>());
         }
-        for (int[] edge: edges) {
+        for (int[] edge: edges) {//建图
             int u = edge[0], v = edge[1];
             graph.get(u).add(v);
             graph.get(v).add(u);
@@ -28,11 +28,12 @@ public class demo834 {
         return ans;
     }
 
+    //以0为根，dfs求和
     public void dfs(int u, int f) {
         sz[u] = 1;
         dp[u] = 0;
         for (int v: graph.get(u)) {
-            if (v == f) {
+            if (v == f) {//避免回头
                 continue;
             }
             dfs(v, u);
@@ -41,18 +42,20 @@ public class demo834 {
         }
     }
 
+    //调整根节点
     public void dfs2(int u, int f) {
-        ans[u] = dp[u];
+        ans[u] = dp[u];//调整后的就是最终的和
         for (int v: graph.get(u)) {
-            if (v == f) {
+            if (v == f) {//避免回头
                 continue;
             }
+            //保存参数用来还原
             int pu = dp[u], pv = dp[v];
             int su = sz[u], sv = sz[v];
 
-            dp[u] -= dp[v] + sz[v];
-            sz[u] -= sz[v];
-            dp[v] += dp[u] + sz[u];
+            dp[u] -= dp[v] + sz[v];//父节点变成子节点，减去这一侧的步数和（原步数+子节点数）
+            sz[u] -= sz[v];//父节点的节点数要减去这一侧的节点数
+            dp[v] += dp[u] + sz[u];//该节点的步数要再加上原来的父节点
             sz[v] += sz[u];
 
             dfs2(v, u);
