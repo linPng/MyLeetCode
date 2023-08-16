@@ -5,7 +5,7 @@ import java.util.*;
 public class D {
 
     //850. 矩形面积 II
-    //暴力哈希肯定是不行了 不会
+    //暴力哈希肯定是不行了 不会 还是不会
     //离散化 + 扫描线 + 使用线段树实时维护
     private Segtree[] tree;
     private List<Integer> hbound;
@@ -13,7 +13,7 @@ public class D {
     public int rectangleArea(int[][] rectangles) {
         final int MOD = 1000000007;
         int n = rectangles.length;
-        Set<Integer> set = new HashSet<Integer>();
+        Set<Integer> set = new HashSet<Integer>();//所有的上下界
         for (int[] rect : rectangles) {
             // 下边界
             set.add(rect[1]);
@@ -30,9 +30,9 @@ public class D {
         List<int[]> sweep = new ArrayList<int[]>();
         for (int i = 0; i < n; ++i) {
             // 左边界
-            sweep.add(new int[]{rectangles[i][0], i, 1});
+            sweep.add(new int[]{rectangles[i][0], i, 1});//入界
             // 右边界
-            sweep.add(new int[]{rectangles[i][2], i, -1});
+            sweep.add(new int[]{rectangles[i][2], i, -1});//出界
         }
         Collections.sort(sweep, (a, b) -> {
             if (a[0] != b[0]) {

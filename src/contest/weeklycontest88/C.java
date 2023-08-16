@@ -3,10 +3,10 @@ package contest.weeklycontest88;
 import java.util.*;
 
 public class C {
-    //851. 喧闹和富有  没时间做
+    //851. 喧闹和富有
     public int[] loudAndRich(int[][] richer, int[] quiet) {
         int n = quiet.length;
-        List<Integer>[] g = new List[n];
+        List<Integer>[] g = new List[n];//list[i]中的都是比i小的
         for (int i = 0; i < n; ++i) {
             g[i] = new ArrayList<Integer>();
         }
@@ -23,7 +23,7 @@ public class C {
     }
 
     public void dfs(int x, int[] quiet, List<Integer>[] g, int[] ans) {
-        if (ans[x] != -1) {
+        if (ans[x] != -1) {//剪枝
             return;
         }
         ans[x] = x;
