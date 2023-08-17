@@ -1,72 +1,60 @@
 package contest.weeklycontest89;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+
+import javafx.util.Pair;
+
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
 
 public class D {
     //854. 相似度为 K 的字符串
+    //bfs
     public int kSimilarity(String s1, String s2) {
-        StringBuilder str1 = new StringBuilder();
-        StringBuilder str2 = new StringBuilder();
-        for (int i = 0; i < s1.length(); i++) {
-            if (s1.charAt(i) != s2.charAt(i)) {
-                str1.append(s1.charAt(i));
-                str2.append(s2.charAt(i));
-            }
-        }
-        int n = str1.length();
-        if (n == 0) {
-            return 0;
-        }
-        List<Integer> smallCycles = new ArrayList<Integer>();
-        List<Integer> largeCycles = new ArrayList<Integer>();
-        for (int i = 1; i < (1 << n); i++) {
-            int[] cnt = new int[6];
-            for (int j = 0; j < n; j++) {
-                if ((i & (1 << j)) != 0) {
-                    cnt[str1.charAt(j) - 'a']++;
-                    cnt[str2.charAt(j) - 'a']--;
+        int n = s1.length();
+        //键值对队列 键：新的str 值：步数
+        Queue<Pair<String, Integer>> queue = new ArrayDeque<Pair<String, Integer>>();
+        Set<String> visit = new HashSet<String>();
+        queue.offer(new Pair<String, Integer>(s1, 0));
+        visit.add(s1);
+        int step = 0;
+        while (!queue.isEmpty()) {
+            int sz = queue.size();
+            for (int i = 0; i < sz; i++) {
+                Pair<String, Integer> pair = queue.poll();
+                String cur = pair.getKey();
+                int pos = pair.getValue();
+                if (cur.equals(s2)) {
+                    return step;
+                }
+                while (pos < n && cur.charAt(pos) == s2.charAt(pos)) {//跳过已经匹配的
+                    pos++;
+                }
+                for (int j = pos + 1; j < n; j++) {
+                    if (s2.charAt(j) == cur.charAt(j)) {//跳过已经匹配的
+                        continue;
+                    }
+                    if (s2.charAt(pos) == cur.charAt(j)) {//找到匹配字符才替换
+                        String next = swap(cur, pos, j);
+                        if (!visit.contains(next)) {//去重剪枝
+                            visit.add(next);
+                            queue.offer(new Pair<String, Integer>(next, pos + 1));
+                        }
+                    }
                 }
             }
-            boolean isCycle = true;
-            for (int j = 0; j < 6; j++) {
-                if (cnt[j] != 0) {
-                    isCycle = false;
-                    break;
-                }
-            }
-            if (isCycle) {
-                int size = Integer.bitCount(i);
-                if (size <= 6) {
-                    smallCycles.add(i);
-                } else {
-                    largeCycles.add(i);
-                }
-            }
+            step++;
         }
-        Collections.sort(smallCycles, (a, b) -> Integer.bitCount(a) - Integer.bitCount(b));
-        Collections.sort(largeCycles, (a, b) -> Integer.bitCount(a) - Integer.bitCount(b));
-        int[] dp = new int[1 << n];
-        Arrays.fill(dp, 1);
-        dp[0] = 0;
-        for (int i = 0; i < smallCycles.size(); i++) {
-            for (int j = 0; j < i; j++) {
-                int x = smallCycles.get(i), y = smallCycles.get(j);
-                if ((x & y) == y) {
-                    dp[x] = Math.max(dp[x], dp[y] + dp[x ^ y]);
-                }
-            }
-        }
-        for (int x : largeCycles) {
-            for (int y : smallCycles) {
-                if ((x & y) == y) {
-                    dp[x] = Math.max(dp[x], dp[y] + dp[x ^ y]);
-                }
-            }
-        }
-        return n - dp[(1 << n) - 1];
+        return step;
+    }
+
+    public String swap(String cur, int i, int j) {
+        char[] arr = cur.toCharArray();
+        char c = arr[i];
+        arr[i] = arr[j];
+        arr[j] = c;
+        return new String(arr);
     }
     public static void main(String[] args) {
 
