@@ -1,6 +1,6 @@
 package planning.BasicDataStructures.BinarySearch;
 
-public class n) {
+public class BinarySearch01_69_Sqrt {
 
 
 
