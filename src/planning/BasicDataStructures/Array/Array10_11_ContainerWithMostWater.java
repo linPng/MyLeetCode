@@ -16,7 +16,30 @@ public class Array10_11_ContainerWithMostWater {
         }
         return ret;
     }
-
+    public int maxArea2(int[] height) {
+        int n=height.length;
+        int l=0;
+        int r=n-1;
+        int ret=0;
+        while(r>l){
+            int h=0;
+            if(height[r]>height[l]){
+                h=height[l];
+                ret=Math.max(ret,(r-l)*h);
+                l++;
+            }else if(height[r]<height[l]){
+                h=height[r];
+                ret=Math.max(ret,(r-l)*h);
+                r--;
+            }else{
+                h=height[r];
+                ret=Math.max(ret,(r-l)*h);
+                l++;
+                r--;
+            }
+        }
+        return ret;
+    }
 
 
 }
