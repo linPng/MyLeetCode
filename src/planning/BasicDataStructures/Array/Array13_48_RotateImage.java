@@ -9,7 +9,7 @@ public class Array13_48_RotateImage {
         int t;
         int n=matrix.length;
         for(int i=0;i<n-n/2;i++){
-            for(int j=0;j<n-n/2;j++){//ÕâÀïµÄÏÞÖÆÌõ¼þÓ¦¸ÃÊÇj<n/2 ,²»ÄÜ¸²¸ÇÖ®Ç°Ðý×ªµÄ,Èç¹ûnÊÇÆæÊý¾Í»á´íÎó
+            for(int j=0;j<n-n/2;j++){//è¿™é‡Œçš„é™åˆ¶æ¡ä»¶åº”è¯¥æ˜¯j<n/2 ,ä¸èƒ½è¦†ç›–ä¹‹å‰æ—‹è½¬çš„,å¦‚æžœnæ˜¯å¥‡æ•°å°±ä¼šé”™è¯¯
                 t=matrix[i][j];
                 matrix[i][j]=matrix[n-j-1][i];
                 matrix[n-j-1][i]=matrix[n-i-1][n-j-1];
