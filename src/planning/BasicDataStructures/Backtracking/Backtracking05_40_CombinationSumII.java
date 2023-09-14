@@ -21,7 +21,7 @@ public class Backtracking05_40_CombinationSumII {
             return;
         }
         for(int j=i;j<c.length;j++){
-            if(i!=j&&o==c[j]){//¼ôÖ¦,±ÜÃâÖØ¸´
+            if(i!=j&&o==c[j]){//å‰ªæžï¼Œé¿å…é‡å¤
                 continue;
             }
             l.add(c[j]);
