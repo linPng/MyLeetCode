@@ -6,7 +6,7 @@ import java.util.List;
 public class Backtracking02_78_Subsets {
 
 
-    //¶ş½øÖÆ
+    //äºŒè¿›åˆ¶
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> ret = new ArrayList<>();
         int n=nums.length;
@@ -23,7 +23,7 @@ public class Backtracking02_78_Subsets {
         return ret;
     }
 
-    //»ØËİ
+    //å›æº¯
     List<List<Integer>> retu = new ArrayList<>();
     public List<List<Integer>> subsets2(int[] nums) {
         dfs(nums,new ArrayList<>(),0);

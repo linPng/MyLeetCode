@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class Backtracking03_90_SubsetsII {
 
 
-    //¶ş½øÖÆ¼ôÖ¦
+    //äºŒè¿›åˆ¶å‰ªæ
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> ret = new ArrayList<>();
@@ -29,7 +29,7 @@ public class Backtracking03_90_SubsetsII {
         }
         return ret;
     }
-    //»ØËİ
+    //å›æº¯
     List<List<Integer>> retu = new ArrayList<>();
     public List<List<Integer>> subsetsWithDup3(int[] nums) {
         Arrays.sort(nums);
@@ -50,7 +50,7 @@ public class Backtracking03_90_SubsetsII {
         dfs(true,nums,d,k+1);
         d.remove(d.size()-1);
     }
-    //¹şÏ£±í
+    //å“ˆå¸Œè¡¨
     public List<List<Integer>> subsetsWithDup2(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> ret = new ArrayList<>();
