@@ -5,35 +5,46 @@ import java.util.Set;
 
 public class Backtracking13_753_CrackingTheSafe {
 
-    StringBuilder sb = new StringBuilder();
-    Set<Integer> seen = new HashSet<Integer>();
-    int highest;
-    int m;
     public String crackSafe(int n, int k) {
-        highest = (int) Math.pow(10, n - 1);
-        m=k;
-        dfs(0);
-        for(int i=1;i<n;i++){
-            sb.append('0');
+        StringBuilder password = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            password.append('0');
         }
-        return sb.toString();
+        Set<String> visited = new HashSet<>();
+        visited.add(password.toString());
+        dfs(visited, password, n, k);
+        return password.toString();
     }
-    public void dfs(int i){
-        System.out.println("i = " + i);
-        System.out.println("seen = " + seen);
-        for(int a=0;a<m;a++){
-            int b=i*10+a;
-            if(!seen.contains(b)){
-                seen.add(b);
-                dfs(b%highest);
-                sb.append(a);
-            }
-            System.out.println("a = " + a);
+
+    private boolean dfs(Set<String> visited, StringBuilder currentPassword, int n, int k) {
+        if (visited.size() == Math.pow(k, n)) {
+            return true;
         }
+
+        String lastDigits = currentPassword.substring(currentPassword.length() - n + 1);
+        System.out.println("lastDigits = " + lastDigits);//可以通过取余来优化效率  
+        for (int num = 0; num < k; num++) {
+            String newPassword = lastDigits + num;
+            System.out.println("newPassword = " + newPassword);
+            System.out.println("visited = " + !visited.contains(newPassword));
+            if (!visited.contains(newPassword)) {
+                System.out.println("dfs in = " + newPassword);
+                visited.add(newPassword);
+                currentPassword.append(num);
+                if (dfs(visited, currentPassword, n, k)) {
+                    return true;
+                }
+                visited.remove(newPassword);
+                System.out.println("dfs out = " + newPassword);
+                currentPassword.deleteCharAt(currentPassword.length() - 1);
+            }
+        }
+
+        return false;
     }
 
     public static void main(String[] args) {
         Backtracking13_753_CrackingTheSafe b = new Backtracking13_753_CrackingTheSafe();
-        System.out.println("b.crackSafe(1,2) = " + b.crackSafe(1,2));
+        System.out.println("b.crackSafe(2,2) = " + b.crackSafe(2,2));
     }
 }
