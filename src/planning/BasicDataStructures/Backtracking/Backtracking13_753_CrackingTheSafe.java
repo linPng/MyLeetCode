@@ -5,46 +5,30 @@ import java.util.Set;
 
 public class Backtracking13_753_CrackingTheSafe {
 
+    //欧拉回路
+    Set<Integer> seen = new HashSet<Integer>();
+    StringBuffer ans = new StringBuffer();
+    int highest;
+    int k;
+
     public String crackSafe(int n, int k) {
-        StringBuilder password = new StringBuilder();
-        for (int i = 0; i < n; i++) {
-            password.append('0');
+        highest = (int) Math.pow(10, n - 1);
+        this.k = k;
+        dfs(0);
+        for (int i = 1; i < n; i++) {
+            ans.append('0');
         }
-        Set<String> visited = new HashSet<>();
-        visited.add(password.toString());
-        dfs(visited, password, n, k);
-        return password.toString();
+        return ans.toString();
     }
 
-    private boolean dfs(Set<String> visited, StringBuilder currentPassword, int n, int k) {
-        if (visited.size() == Math.pow(k, n)) {
-            return true;
-        }
-
-        String lastDigits = currentPassword.substring(currentPassword.length() - n + 1);
-        System.out.println("lastDigits = " + lastDigits);//可以通过取余来优化效率  
-        for (int num = 0; num < k; num++) {
-            String newPassword = lastDigits + num;
-            System.out.println("newPassword = " + newPassword);
-            System.out.println("visited = " + !visited.contains(newPassword));
-            if (!visited.contains(newPassword)) {
-                System.out.println("dfs in = " + newPassword);
-                visited.add(newPassword);
-                currentPassword.append(num);
-                if (dfs(visited, currentPassword, n, k)) {
-                    return true;
-                }
-                visited.remove(newPassword);
-                System.out.println("dfs out = " + newPassword);
-                currentPassword.deleteCharAt(currentPassword.length() - 1);
+    public void dfs(int node) {
+        for (int x = 0; x < k; ++x) {
+            int nei = node * 10 + x;
+            if (!seen.contains(nei)) {
+                seen.add(nei);
+                dfs(nei % highest);
+                ans.append(x);
             }
         }
-
-        return false;
-    }
-
-    public static void main(String[] args) {
-        Backtracking13_753_CrackingTheSafe b = new Backtracking13_753_CrackingTheSafe();
-        System.out.println("b.crackSafe(2,2) = " + b.crackSafe(2,2));
     }
 }
